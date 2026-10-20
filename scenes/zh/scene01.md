@@ -1,4 +1,4 @@
-# Scene 01 雨中的租书屋
+# Scene 01 避雨的租书屋
 
 [bg street_rain]
 [bgm bgm_rain]

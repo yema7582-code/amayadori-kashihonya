@@ -313,5 +313,23 @@
    "水濑 遥": "haruka",
    "鱼店老板娘": "fishmonger"
   }
+ },
+ "endingTitles": {
+  "_note": "Ending card text per language, keyed by ending id (from 'END X' in the [title] tag, else the resolved ending). Falls back to the tag text. Names from loc/glossary.md.",
+  "ja": {
+   "A": "END A「栞のしおり」",
+   "B": "END B「雨上がり」",
+   "C": "END C「となりの席」"
+  },
+  "en": {
+   "A": "END A: Shiori's Bookmark",
+   "B": "END B: After the Rain",
+   "C": "END C: The Seat Beside Me"
+  },
+  "zh": {
+   "A": "END A《栞的书签》",
+   "B": "END B《雨停之后》",
+   "C": "END C《身旁的座位》"
+  }
  }
 }

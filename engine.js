@@ -124,7 +124,7 @@ function step() {
       case 'jump': S.pc = labels[c.arg]; break;
       case 'if': { const [cond, to] = c.arg.split('->').map(s => s.trim()); if (evalExpr(cond)) S.pc = labels[to]; break; }
       case 'ending': { const e = resolveEnding(); S.ending = e.id; S.pc = labels[e.label]; break; }
-      case 'title': return showEnd(c.arg);
+      case 'title': return showEnd(endingTitle(c.arg));
       case 'end': return toTitle();
       case 'say': return say(c);
       case 'choice': return showChoice(c);
@@ -166,6 +166,10 @@ function showChoice(c) {
     box.appendChild(b);
   });
   box.classList.remove('hidden');
+}
+function endingTitle(raw) {
+  const m = raw.match(/END\s*([A-Z])\b/), id = m ? m[1] : S.ending, map = G.endingTitles || {};
+  return (map[lang] || {})[id] || raw;
 }
 function showEnd(t) {
   mode = null; status(); clearTimeout(autoT);
@@ -253,7 +257,7 @@ function applyUI() {
 async function setLang(code) {
   if (code === lang) return;
   lang = code; localStorage.setItem(LS + 'lang', code);
-  await load(); applyUI(); if (S) { relang = true; render(); }
+  applyUI(); await load(); if (S) { relang = true; render(); }
 }
 window.VN.setLang = setLang; Object.defineProperty(window.VN, 'lang', {get: () => lang});
 load().then(() => { applyUI(); bind(); window.VN.ready = true; }).catch(e => { document.body.insertAdjacentHTML('beforeend', `<pre style="color:#f88">${e}</pre>`); });
