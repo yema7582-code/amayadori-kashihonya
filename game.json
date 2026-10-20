@@ -1,0 +1,26 @@
+{
+  "title": "雨宿りの貸本屋",
+  "scenes": ["scene01.md","scene02.md","scene03.md","scene04.md","scene05.md","scene06.md","scene07.md","scene08.md","scene09.md","scene10.md"],
+  "extra": ["ending_a.md","ending_b.md","ending_c.md"],
+  "flags": {"trust_shiori":0,"told_chikage":0,"found_stamp":0,"kept_secret":0,"chose_shiori":0,"answer_later":0},
+  "flagLimits": {"trust_shiori":[0,3]},
+  "endings": [
+    {"id":"A","label":"ending_A","when":"trust_shiori >= 3 && found_stamp && (kept_secret || !told_chikage)"},
+    {"id":"C","label":"ending_C","when":"trust_shiori < 2 && answer_later"},
+    {"id":"B","label":"ending_B","when":"trust_shiori >= 2"}
+  ],
+  "defaultEnding": "ending_B",
+  "names": {"shiori":"栞","chikage":"千景","soichiro":"宗一郎"},
+  "colors": {"shiori":"#2f5d50","chikage":"#b5774a","soichiro":"#6b6f78"},
+  "bgs": {
+    "street_rain":["商店街（雨）","#4a5866","#2c3540"],
+    "shop_rain":["貸本屋 店内（夕・雨）","#6b5440","#3a2c22"],
+    "shop_night":["貸本屋 店内（夜）","#8a6232","#2a1d12"],
+    "library":["高校の図書室","#9aa58a","#5e6b55"],
+    "shrine_steps":["神社の石段（夜）","#2e3350","#141726"],
+    "seawall_eve":["防波堤（夕方）","#d69a6a","#5a6f8f"],
+    "seawall_night":["防波堤（夜）","#1f2d4a","#0a0f1c"],
+    "letter_cg":["手紙（CG）","#efe6d2","#d8cbb0"],
+    "black":["","#000","#000"]
+  }
+}

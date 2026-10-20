@@ -1,0 +1,29 @@
+*{box-sizing:border-box}html,body{margin:0;height:100%;background:#111;font-family:"Hiragino Mincho ProN","Yu Mincho","Noto Serif JP",serif;color:#eee}
+#game{position:relative;width:min(100vw,177.78vh);height:min(56.25vw,100vh);margin:auto;top:50%;transform:translateY(-50%);overflow:hidden;background:#000;user-select:none}
+#bg{position:absolute;inset:0;transition:background .6s}
+#bglabel{position:absolute;top:10px;left:14px;font-size:14px;opacity:.7;background:#0006;padding:2px 8px;border-radius:4px}
+#bg.rain::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(105deg,transparent 0 18px,#ffffff14 18px 19px);animation:rain .5s linear infinite}
+@keyframes rain{to{background-position:-12px 40px}}
+#chars{position:absolute;inset:0;display:flex;justify-content:center;align-items:flex-end;gap:6%;pointer-events:none}
+.char{width:22%;height:82%;position:relative;transition:opacity .3s}
+.char .head{position:absolute;left:30%;width:40%;aspect-ratio:1;top:0;border-radius:50%}
+.char .body{position:absolute;left:8%;width:84%;top:26%;bottom:0;border-radius:45% 45% 0 0}
+.char .lbl{position:absolute;bottom:42%;width:100%;text-align:center;font-size:clamp(10px,1.6vw,18px);background:#0008;padding:2px}
+.char.ghost{opacity:.55}
+#textbox{position:absolute;left:3%;right:3%;bottom:3%;height:28%;background:#0f1520d9;border:1px solid #fff3;border-radius:8px;padding:2.2% 3%;font-size:clamp(12px,2vw,24px);line-height:1.6;cursor:pointer}
+#name{position:absolute;top:-1.4em;left:2%;background:#2f5d50;padding:.1em .9em;border-radius:6px;font-size:.9em}
+#name:empty{display:none}
+#menu{position:absolute;right:8px;bottom:6px;display:flex;gap:4px}
+#menu button{font-size:clamp(9px,1vw,13px);background:#0000;color:#ccc;border:1px solid #fff3;padding:2px 6px;cursor:pointer}
+#menu button.on{background:#c9a14a;color:#000}
+#choices{position:absolute;inset:0 0 32% 0;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:14px;background:#0005}
+#choices button,.screen button{font:inherit;font-size:clamp(12px,1.8vw,22px);min-width:50%;padding:.5em 1em;background:#1c2738ee;color:#eee;border:1px solid #c9a14a88;border-radius:6px;cursor:pointer}
+#choices button:hover,.screen button:hover{background:#2f5d50}
+.screen{position:absolute;inset:0;background:#0b0f18f2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:4%;overflow:auto}
+#title{background:linear-gradient(#2c3540,#0b0f18)}#title h1{font-size:clamp(24px,5vw,64px);margin:0;letter-spacing:.2em}.sub{opacity:.6}
+#slot-list,#log-list{width:80%;display:flex;flex-direction:column;gap:8px}
+#log-list{overflow:auto;max-height:70%;font-size:clamp(11px,1.5vw,18px)}#log-list p{margin:0;border-bottom:1px solid #fff1;padding:4px}
+.screen label{font-size:clamp(12px,1.6vw,20px)}
+#endcard{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:clamp(20px,4vw,48px);background:#000c;cursor:pointer;letter-spacing:.15em}
+.hidden{display:none!important}
+#status{position:absolute;top:10px;right:14px;font-size:12px;opacity:.6}

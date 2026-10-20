@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>雨宿りの貸本屋</title><link rel="stylesheet" href="style.css"></head>
+<body><div id="game">
+  <div id="bg"><span id="bglabel"></span></div>
+  <div id="chars"></div>
+  <div id="textbox" class="hidden"><div id="name"></div><div id="text"></div>
+    <div id="menu"><button data-a="auto">AUTO</button><button data-a="skip">SKIP</button><button data-a="log">LOG</button><button data-a="save">SAVE</button><button data-a="load">LOAD</button><button data-a="config">CONFIG</button><button data-a="title">TITLE</button></div>
+  </div>
+  <div id="choices" class="hidden"></div>
+  <div id="endcard" class="hidden"></div>
+  <div id="title" class="screen"><h1>雨宿りの貸本屋</h1><p class="sub">— Prototype —</p>
+    <button id="t-start">はじめから</button><button id="t-load">つづきから</button><button id="t-config">設定</button></div>
+  <div id="slots" class="screen hidden"><h2 id="slots-h"></h2><div id="slot-list"></div><button class="close">戻る</button></div>
+  <div id="log" class="screen hidden"><h2>バックログ</h2><div id="log-list"></div><button class="close">戻る</button></div>
+  <div id="config" class="screen hidden"><h2>設定</h2>
+    <label>文字速度 <input id="cfg-speed" type="range" min="0" max="100"></label>
+    <label>オート待ち時間 <input id="cfg-auto" type="range" min="500" max="5000" step="100"></label>
+    <label><input id="cfg-skipall" type="checkbox"> 未読もスキップ</label>
+    <button class="close">戻る</button></div>
+  <div id="status"></div>
+</div>
+<script src="scenes.bundle.js" onerror="void 0"></script>
+<script src="engine.js"></script></body></html>
