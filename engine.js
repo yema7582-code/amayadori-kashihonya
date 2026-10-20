@@ -3,6 +3,7 @@
 'use strict';
 const $ = s => document.querySelector(s);
 const LS = 'amayadori_';
+let lang = localStorage.getItem('amayadori_lang') || 'ja', relang = false;
 let G, P = [], labels = {}, S, busy = false, typing = null, autoT = null, mode = null;
 const cfg = Object.assign({speed: 60, auto: 1800, skipAll: false}, JSON.parse(localStorage.getItem(LS + 'cfg') || '{}'));
 const read = new Set(JSON.parse(localStorage.getItem(LS + 'read') || '[]'));
@@ -35,18 +36,26 @@ function parse(src, file) {
       out.push({op: tag, arg, at});
       return;
     }
-    const d = line.match(/^([^:：「」（）]{1,16})[:：]\s*(.*)$/);
+    const d = line.match(/^([^:：「」（）\[]{1,32})[:：]\s*(.*)$/);
     out.push(d ? {op: 'say', name: d[1].trim(), text: d[2], at} : {op: 'say', name: '', text: line, at});
   });
   if (choice) { console.warn('unclosed [choice] in', file); out.push(choice); }
   return out;
 }
+async function sceneText(f) {
+  // scenes/<lang>/f -> scenes/ja/f (fallback language) -> scenes/f (legacy root)
+  for (const path of [`scenes/${lang}/${f}`, `scenes/${G.fallbackLanguage || 'ja'}/${f}`, `scenes/${f}`]) {
+    try { return await getText(path); } catch (e) {}
+  }
+  throw new Error('scene not found: ' + f);
+}
 async function load() {
-  G = JSON.parse(await getText('game.json'));
+  G = G || JSON.parse(await getText('game.json'));
+  P = []; for (const k in labels) delete labels[k];
   for (const f of [...G.scenes, ...G.extra]) {
     const startLabel = '__' + f;
     labels[startLabel] = P.length;
-    P.push(...parse(await getText('scenes/' + f), f));
+    P.push(...parse(await sceneText(f), f));
     if (G.extra.includes(f) && P[P.length - 1].op !== 'end') P.push({op: 'end', arg: ''});
   }
   // validate jumps
@@ -76,18 +85,23 @@ function resolveEnding() {
   return {id: 'default', label: G.defaultEnding};
 }
 // ---------- rendering ----------
+function speakerId(name) {
+  if (!name) return null; const A = G.nameAliases || {};
+  return (A[lang] || {})[name] || (A.ja || {})[name] || Object.values(A).reduce((r, m) => r || (typeof m === 'object' ? m[name] : null), null) || null;
+}
 function renderBg() {
-  const b = G.bgs[S.bg] || [S.bg, '#333', '#111'];
-  $('#bg').style.background = `linear-gradient(${b[1]},${b[2]})`;
+  const b = G.bgs[S.bg] || {label: {}, colors: ['#333', '#111']}, el = $('#bg');
+  el.style.background = (b.image ? `url("${b.image}") center/cover no-repeat, ` : '') + `linear-gradient(${b.colors[0]},${b.colors[1]})`;
+  el.classList.toggle('img', !!b.image);
   $('#bg').classList.toggle('rain', /rain/.test(S.bg || ''));
-  $('#bglabel').textContent = b[0] ? `[BG] ${b[0]}` : '';
+  const lb = b.label[lang] || b.label.ja || S.bg; $('#bglabel').textContent = lb ? `[BG] ${lb}` : '';
 }
 function renderChars() {
   const el = $('#chars'); el.innerHTML = '';
   for (const [id, ex] of Object.entries(S.chars)) {
     const c = G.colors[id] || '#777', d = document.createElement('div');
     d.className = 'char' + (id === 'soichiro' ? ' ghost' : ''); d.dataset.id = id;
-    d.innerHTML = `<div class="body" style="background:${c}"></div><div class="head" style="background:${c}"></div><div class="lbl">${G.names[id] || id}<br>（${ex}）</div>`;
+    d.innerHTML = `<div class="body" style="background:${c}"></div><div class="head" style="background:${c}"></div><div class="lbl">${(G.names[lang] || G.names.ja)[id] || id}<br>（${ex}）</div>`;
     el.appendChild(d);
   }
 }
@@ -121,7 +135,9 @@ function step() {
 }
 function say(c) {
   const idx = S.pc - 1; S.cur = c;
-  $('#name').textContent = c.name; $('#name').style.background = '#2f5d50';
+  $('#name').textContent = c.name; const who = speakerId(c.name); S.speaker = who;
+  $('#name').style.background = (who && G.colors[who]) || '#2f5d50';
+  document.querySelectorAll('.char').forEach(e => e.classList.toggle('dim', !!who && who in S.chars && e.dataset.id !== who));
   S.log.push({name: c.name, text: c.text}); if (S.log.length > 300) S.log.shift();
   const wasRead = read.has(idx); read.add(idx); saveRead();
   const el = $('#text'); clearTimeout(autoT);
@@ -171,16 +187,17 @@ function hideAll() { document.querySelectorAll('.screen').forEach(s => s.classLi
 function anyScreen() { return [...document.querySelectorAll('.screen')].some(s => !s.classList.contains('hidden')) || !$('#endcard').classList.contains('hidden'); }
 let back = null;
 function open(id) { back = [...document.querySelectorAll('.screen')].find(s => !s.classList.contains('hidden'))?.id || null; mode = null; status(); clearTimeout(autoT); hideAll(); $(id).classList.remove('hidden'); }
-function close() { hideAll(); if (back === 'title' || !S) $('#title').classList.remove('hidden'); back = null; }
+function close() { hideAll();
+  if (relang && S) { relang = false; const c = P[S.pc - 1]; if (c && (c.op === 'say' || c.op === 'choice')) { if (c.op === 'say') S.log.pop(); S.pc--; $('#choices').classList.add('hidden'); render(); step(); } } if (back === 'title' || !S) $('#title').classList.remove('hidden'); back = null; }
 function saveRead() { localStorage.setItem(LS + 'read', JSON.stringify([...read])); }
 function slotKey(i) { return LS + 'slot' + i; }
 function openSlots(kind) {
-  open('#slots'); $('#slots-h').textContent = kind === 'save' ? 'セーブ' : 'ロード';
+  open('#slots'); $('#slots-h').textContent = kind === 'save' ? T().save : T().loadT;
   const list = $('#slot-list'); list.innerHTML = '';
   for (let i = 1; i <= 3; i++) {
     const d = JSON.parse(localStorage.getItem(slotKey(i)) || 'null');
     const b = document.createElement('button'); b.dataset.slot = i;
-    b.textContent = `スロット${i}：` + (d ? `${d.date} ／ ${d.preview}` : '— 空き —');
+    b.textContent = `${T().slot}${i}：` + (d ? `${d.date} ／ ${d.preview}` : T().empty);
     b.onclick = () => {
       if (kind === 'save') {
         const at = S.pc - 1; // re-run the current line/choice on load
@@ -202,7 +219,7 @@ function bind() {
     const a = e.target.dataset.a; if (!a) return; e.stopPropagation();
     if (a === 'auto' || a === 'skip') { mode = mode === a ? null : a; status(); if (mode && !typing) { clearTimeout(autoT); afterType(); } }
     else if (a === 'log') openLog(); else if (a === 'save') openSlots('save'); else if (a === 'load') openSlots('load');
-    else if (a === 'config') open('#config'); else if (a === 'title') { if (confirm('タイトルに戻りますか？')) toTitle(); }
+    else if (a === 'config') open('#config'); else if (a === 'title') { if (confirm(T().toTitle)) toTitle(); }
   });
   document.addEventListener('keydown', e => {
     if (e.code === 'Space' || e.code === 'Enter') { e.preventDefault(); if (S && $('#choices').classList.contains('hidden')) { if (!$('#endcard').classList.contains('hidden')) $('#endcard').click(); else advance(); } }
@@ -218,6 +235,26 @@ function bind() {
   const saveCfg = () => { cfg.speed = +sp.value; cfg.auto = +au.value; cfg.skipAll = sk.checked; localStorage.setItem(LS + 'cfg', JSON.stringify(cfg)); };
   sp.oninput = au.oninput = sk.onchange = saveCfg;
 }
-window.VN = {get state() { return S; }, get program() { return P; }, labels, cfg, resolveEnding, evalExpr};
-load().then(() => { bind(); window.VN.ready = true; }).catch(e => { document.body.insertAdjacentHTML('beforeend', `<pre style="color:#f88">${e}</pre>`); });
+window.VN = {speakerId: n => speakerId(n), get state() { return S; }, get program() { return P; }, labels, cfg, resolveEnding, evalExpr};
+function T() { return G.ui[lang] || G.ui.ja; }
+function applyUI() {
+  const t = T(); document.documentElement.lang = lang === 'zh' ? 'zh-CN' : lang;
+  document.querySelectorAll('[data-i]').forEach(e => e.textContent = t[e.dataset.i]);
+  document.querySelectorAll('#menu button').forEach((b, i) => b.textContent = t.menu[i]);
+  document.title = t.title;
+  document.querySelectorAll('.langsel').forEach(box => {
+    box.innerHTML = '';
+    for (const [code, label] of Object.entries(G.languages)) {
+      const b = document.createElement('button'); b.textContent = label; b.dataset.lang = code; b.className = code === lang ? 'on' : '';
+      b.onclick = e => { e.stopPropagation(); setLang(code); }; box.appendChild(b);
+    }
+  });
+}
+async function setLang(code) {
+  if (code === lang) return;
+  lang = code; localStorage.setItem(LS + 'lang', code);
+  await load(); applyUI(); if (S) { relang = true; render(); }
+}
+window.VN.setLang = setLang; Object.defineProperty(window.VN, 'lang', {get: () => lang});
+load().then(() => { applyUI(); bind(); window.VN.ready = true; }).catch(e => { document.body.insertAdjacentHTML('beforeend', `<pre style="color:#f88">${e}</pre>`); });
 })();

@@ -27,3 +27,6 @@
 #endcard{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:clamp(20px,4vw,48px);background:#000c;cursor:pointer;letter-spacing:.15em}
 .hidden{display:none!important}
 #status{position:absolute;top:10px;right:14px;font-size:12px;opacity:.6}
+.langsel{display:inline-flex;gap:6px}.langsel button{min-width:auto!important;font-size:clamp(11px,1.4vw,16px)!important;padding:.3em .8em!important}.langsel button.on{background:#c9a14a!important;color:#000!important}
+#bg.img{background-size:cover!important;background-position:center!important}
+.char.dim{filter:brightness(.6)}

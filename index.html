@@ -9,15 +9,16 @@
   </div>
   <div id="choices" class="hidden"></div>
   <div id="endcard" class="hidden"></div>
-  <div id="title" class="screen"><h1>雨宿りの貸本屋</h1><p class="sub">— Prototype —</p>
-    <button id="t-start">はじめから</button><button id="t-load">つづきから</button><button id="t-config">設定</button></div>
-  <div id="slots" class="screen hidden"><h2 id="slots-h"></h2><div id="slot-list"></div><button class="close">戻る</button></div>
-  <div id="log" class="screen hidden"><h2>バックログ</h2><div id="log-list"></div><button class="close">戻る</button></div>
-  <div id="config" class="screen hidden"><h2>設定</h2>
-    <label>文字速度 <input id="cfg-speed" type="range" min="0" max="100"></label>
-    <label>オート待ち時間 <input id="cfg-auto" type="range" min="500" max="5000" step="100"></label>
-    <label><input id="cfg-skipall" type="checkbox"> 未読もスキップ</label>
-    <button class="close">戻る</button></div>
+  <div id="title" class="screen"><h1 data-i="title">雨宿りの貸本屋</h1><p class="sub" id="t-sub">— Prototype —</p><div class="langsel"></div>
+    <button id="t-start" data-i="start">はじめから</button><button id="t-load" data-i="load">つづきから</button><button id="t-config" data-i="config">設定</button></div>
+  <div id="slots" class="screen hidden"><h2 id="slots-h"></h2><div id="slot-list"></div><button class="close" data-i="back">戻る</button></div>
+  <div id="log" class="screen hidden"><h2 data-i="log">バックログ</h2><div id="log-list"></div><button class="close" data-i="back">戻る</button></div>
+  <div id="config" class="screen hidden"><h2 data-i="config">設定</h2>
+    <label><span data-i="lang">言語</span> <span class="langsel"></span></label>
+    <label><span data-i="speed">文字速度</span> <input id="cfg-speed" type="range" min="0" max="100"></label>
+    <label><span data-i="autoWait">オート待ち時間</span> <input id="cfg-auto" type="range" min="500" max="5000" step="100"></label>
+    <label><input id="cfg-skipall" type="checkbox"> <span data-i="skipAll">未読もスキップ</span></label>
+    <button class="close" data-i="back">戻る</button></div>
   <div id="status"></div>
 </div>
 <script src="scenes.bundle.js" onerror="void 0"></script>

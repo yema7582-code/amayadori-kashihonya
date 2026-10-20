@@ -1,26 +1,317 @@
 {
-  "title": "雨宿りの貸本屋",
-  "scenes": ["scene01.md","scene02.md","scene03.md","scene04.md","scene05.md","scene06.md","scene07.md","scene08.md","scene09.md","scene10.md"],
-  "extra": ["ending_a.md","ending_b.md","ending_c.md"],
-  "flags": {"trust_shiori":0,"told_chikage":0,"found_stamp":0,"kept_secret":0,"chose_shiori":0,"answer_later":0},
-  "flagLimits": {"trust_shiori":[0,3]},
-  "endings": [
-    {"id":"A","label":"ending_A","when":"trust_shiori >= 3 && found_stamp && (kept_secret || !told_chikage)"},
-    {"id":"C","label":"ending_C","when":"trust_shiori < 2 && answer_later"},
-    {"id":"B","label":"ending_B","when":"trust_shiori >= 2"}
-  ],
-  "defaultEnding": "ending_B",
-  "names": {"shiori":"栞","chikage":"千景","soichiro":"宗一郎"},
-  "colors": {"shiori":"#2f5d50","chikage":"#b5774a","soichiro":"#6b6f78"},
-  "bgs": {
-    "street_rain":["商店街（雨）","#4a5866","#2c3540"],
-    "shop_rain":["貸本屋 店内（夕・雨）","#6b5440","#3a2c22"],
-    "shop_night":["貸本屋 店内（夜）","#8a6232","#2a1d12"],
-    "library":["高校の図書室","#9aa58a","#5e6b55"],
-    "shrine_steps":["神社の石段（夜）","#2e3350","#141726"],
-    "seawall_eve":["防波堤（夕方）","#d69a6a","#5a6f8f"],
-    "seawall_night":["防波堤（夜）","#1f2d4a","#0a0f1c"],
-    "letter_cg":["手紙（CG）","#efe6d2","#d8cbb0"],
-    "black":["","#000","#000"]
+ "title": "雨宿りの貸本屋",
+ "scenes": [
+  "scene01.md",
+  "scene02.md",
+  "scene03.md",
+  "scene04.md",
+  "scene05.md",
+  "scene06.md",
+  "scene07.md",
+  "scene08.md",
+  "scene09.md",
+  "scene10.md"
+ ],
+ "extra": [
+  "ending_a.md",
+  "ending_b.md",
+  "ending_c.md"
+ ],
+ "flags": {
+  "trust_shiori": 0,
+  "told_chikage": 0,
+  "found_stamp": 0,
+  "chose_shiori": 0,
+  "answer_later": 0
+ },
+ "flagLimits": {
+  "trust_shiori": [
+   0,
+   3
+  ]
+ },
+ "endings": [
+  {
+   "id": "A",
+   "label": "ending_A",
+   "when": "trust_shiori >= 3 && found_stamp && !told_chikage"
+  },
+  {
+   "id": "C",
+   "label": "ending_C",
+   "when": "trust_shiori < 2 && answer_later"
+  },
+  {
+   "id": "B",
+   "label": "ending_B",
+   "when": "trust_shiori >= 2"
   }
+ ],
+ "defaultEnding": "ending_B",
+ "names": {
+  "ja": {
+   "shiori": "栞",
+   "chikage": "千景",
+   "soichiro": "宗一郎"
+  },
+  "en": {
+   "shiori": "Shiori",
+   "chikage": "Chikage",
+   "soichiro": "Soichiro"
+  },
+  "zh": {
+   "shiori": "栞",
+   "chikage": "千景",
+   "soichiro": "宗一郎"
+  }
+ },
+ "colors": {
+  "shiori": "#2f5d50",
+  "chikage": "#b5774a",
+  "soichiro": "#6b6f78",
+  "minato": "#3d4f73"
+ },
+ "bgs": {
+  "street_rain": {
+   "label": {
+    "ja": "商店街（雨）",
+    "en": "Shopping arcade (rain)",
+    "zh": "商店街（雨）"
+   },
+   "colors": [
+    "#4a5866",
+    "#2c3540"
+   ]
+  },
+  "shop_rain": {
+   "label": {
+    "ja": "貸本屋 店内（夕・雨）",
+    "en": "Lending library (evening, rain)",
+    "zh": "租书屋 店内（傍晚・雨）"
+   },
+   "colors": [
+    "#6b5440",
+    "#3a2c22"
+   ]
+  },
+  "shop_night": {
+   "label": {
+    "ja": "貸本屋 店内（夜）",
+    "en": "Lending library (night)",
+    "zh": "租书屋 店内（夜）"
+   },
+   "colors": [
+    "#8a6232",
+    "#2a1d12"
+   ]
+  },
+  "library": {
+   "label": {
+    "ja": "高校の図書室",
+    "en": "School library",
+    "zh": "高中图书室"
+   },
+   "colors": [
+    "#9aa58a",
+    "#5e6b55"
+   ]
+  },
+  "shrine_steps": {
+   "label": {
+    "ja": "神社の石段（夜）",
+    "en": "Shrine steps (night)",
+    "zh": "神社石阶（夜）"
+   },
+   "colors": [
+    "#2e3350",
+    "#141726"
+   ]
+  },
+  "seawall_eve": {
+   "label": {
+    "ja": "防波堤（夕方）",
+    "en": "Seawall (evening)",
+    "zh": "防波堤（傍晚）"
+   },
+   "colors": [
+    "#d69a6a",
+    "#5a6f8f"
+   ]
+  },
+  "seawall_night": {
+   "label": {
+    "ja": "防波堤（夜）",
+    "en": "Seawall (night)",
+    "zh": "防波堤（夜）"
+   },
+   "colors": [
+    "#1f2d4a",
+    "#0a0f1c"
+   ]
+  },
+  "letter_cg": {
+   "label": {
+    "ja": "手紙（CG）",
+    "en": "Letter (CG)",
+    "zh": "信（CG）"
+   },
+   "colors": [
+    "#efe6d2",
+    "#d8cbb0"
+   ]
+  },
+  "black": {
+   "label": {
+    "ja": "",
+    "en": "",
+    "zh": ""
+   },
+   "colors": [
+    "#000",
+    "#000"
+   ]
+  },
+  "hospital_room": {
+   "label": {
+    "ja": "病室",
+    "en": "Hospital room",
+    "zh": "病房"
+   },
+   "colors": [
+    "#c9d3d6",
+    "#8e9a9e"
+   ],
+   "image": "img/hospital_room.jpg"
+  }
+ },
+ "languages": {
+  "ja": "日本語",
+  "en": "English",
+  "zh": "中文"
+ },
+ "fallbackLanguage": "ja",
+ "_endings_note": "Checked top to bottom; first true 'when' wins, else defaultEnding. Scene 10 also has an explicit [if chose_shiori && trust_shiori < 2 -> ending_B].",
+ "ui": {
+  "ja": {
+   "start": "はじめから",
+   "load": "つづきから",
+   "config": "設定",
+   "back": "戻る",
+   "save": "セーブ",
+   "loadT": "ロード",
+   "slot": "スロット",
+   "empty": "— 空き —",
+   "log": "バックログ",
+   "speed": "文字速度",
+   "autoWait": "オート待ち時間",
+   "skipAll": "未読もスキップ",
+   "lang": "言語",
+   "toTitle": "タイトルに戻りますか？",
+   "menu": [
+    "AUTO",
+    "SKIP",
+    "LOG",
+    "SAVE",
+    "LOAD",
+    "CONFIG",
+    "TITLE"
+   ],
+   "title": "雨宿りの貸本屋"
+  },
+  "en": {
+   "start": "New Game",
+   "load": "Continue",
+   "config": "Settings",
+   "back": "Back",
+   "save": "Save",
+   "loadT": "Load",
+   "slot": "Slot ",
+   "empty": "— empty —",
+   "log": "Backlog",
+   "speed": "Text speed",
+   "autoWait": "Auto-advance delay",
+   "skipAll": "Skip unread text",
+   "lang": "Language",
+   "toTitle": "Return to the title screen?",
+   "menu": [
+    "AUTO",
+    "SKIP",
+    "LOG",
+    "SAVE",
+    "LOAD",
+    "CONFIG",
+    "TITLE"
+   ],
+   "title": "The Lending Library in the Rain"
+  },
+  "zh": {
+   "start": "开始游戏",
+   "load": "继续游戏",
+   "config": "设置",
+   "back": "返回",
+   "save": "存档",
+   "loadT": "读档",
+   "slot": "存档位",
+   "empty": "— 空 —",
+   "log": "历史记录",
+   "speed": "文字速度",
+   "autoWait": "自动播放等待",
+   "skipAll": "跳过未读文本",
+   "lang": "语言",
+   "toTitle": "返回标题画面吗？",
+   "menu": [
+    "自动",
+    "快进",
+    "记录",
+    "存档",
+    "读档",
+    "设置",
+    "标题"
+   ],
+   "title": "避雨的租书屋"
+  }
+ },
+ "nameAliases": {
+  "_note": "Localized speaker name (as written before ':') -> character id. Display uses the name as written; sprites/colors use the id. Source: loc/glossary.md",
+  "ja": {
+   "湊": "minato",
+   "篠宮 湊": "minato",
+   "栞": "shiori",
+   "久世 栞": "shiori",
+   "千景": "chikage",
+   "早瀬 千景": "chikage",
+   "宗一郎": "soichiro",
+   "久世 宗一郎": "soichiro",
+   "遥": "haruka",
+   "水瀬 遥": "haruka",
+   "魚屋のおかみさん": "fishmonger"
+  },
+  "en": {
+   "Minato": "minato",
+   "Minato Shinomiya": "minato",
+   "Shiori": "shiori",
+   "Shiori Kuze": "shiori",
+   "Chikage": "chikage",
+   "Chikage Hayase": "chikage",
+   "Soichiro": "soichiro",
+   "Soichiro Kuze": "soichiro",
+   "Haruka": "haruka",
+   "Haruka Minase": "haruka",
+   "Fishmonger's wife": "fishmonger",
+   "The fishmonger's wife": "fishmonger"
+  },
+  "zh": {
+   "湊": "minato",
+   "篠宫 湊": "minato",
+   "栞": "shiori",
+   "久世 栞": "shiori",
+   "千景": "chikage",
+   "早濑 千景": "chikage",
+   "宗一郎": "soichiro",
+   "久世 宗一郎": "soichiro",
+   "遥": "haruka",
+   "水濑 遥": "haruka",
+   "鱼店老板娘": "fishmonger"
+  }
+ }
 }
